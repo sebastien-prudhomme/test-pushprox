@@ -1,0 +1,13 @@
+component: kube-proxy
+metricsPort: 10249
+clients:
+  port: 10013
+  useLocalhost: true
+  resources: {}
+  tolerations:
+    - effect: NoExecute
+      operator: Exists
+    - effect: NoSchedule
+      operator: Exists
+proxy:
+  resources: {}

@@ -1,0 +1,78 @@
+---
+apiVersion: skaffold/v2beta23
+kind: Config
+metadata:
+  name: kube-prometheus
+deploy:
+  helm:
+    releases:
+      - name: kube-prometheus
+        remoteChart: kube-prometheus-stack
+        valuesFiles:
+          - kube-prometheus.yaml
+        namespace: kube-prometheus
+        version: 35.4.2
+        createNamespace: true
+        repo: https://prometheus-community.github.io/helm-charts/
+portForward:
+  - resourceType: Service
+    resourceName: kube-prometheus-prometheus
+    namespace: kube-prometheus
+    port: 9090
+  - resourceType: Service
+    resourceName: kube-prometheus-alertmanager
+    namespace: kube-prometheus
+    port: 9093
+  - resourceType: Service
+    resourceName: kube-prometheus-grafana
+    namespace: kube-prometheus
+    port: 80
+    localPort: 3000
+---
+apiVersion: skaffold/v2beta23
+kind: Config
+metadata:
+  name: pushprox-kube-controller-manager
+deploy:
+  helm:
+    releases:
+      - name: pushprox-kube-controller-manager
+        remoteChart: rancher-pushprox
+        valuesFiles:
+          - pushprox-kube-controller-manager.yaml
+        namespace: kube-prometheus
+        version: 100.0.1
+        createNamespace: true
+        repo: https://raw.githubusercontent.com/rancher/charts/dev-v2.6/
+---
+apiVersion: skaffold/v2beta23
+kind: Config
+metadata:
+  name: pushprox-kube-proxy
+deploy:
+  helm:
+    releases:
+      - name: pushprox-kube-proxy
+        remoteChart: rancher-pushprox
+        valuesFiles:
+          - pushprox-kube-proxy.yaml
+        namespace: kube-prometheus
+        version: 100.0.1
+        createNamespace: true
+        repo: https://raw.githubusercontent.com/rancher/charts/dev-v2.6/
+---
+apiVersion: skaffold/v2beta23
+kind: Config
+metadata:
+  name: pushprox-kube-scheduler
+deploy:
+  helm:
+    releases:
+      - name: pushprox-kube-scheduler
+        remoteChart: rancher-pushprox
+        valuesFiles:
+          - pushprox-kube-scheduler.yaml
+        namespace: kube-prometheus
+        version: 100.0.1
+        createNamespace: true
+        repo: https://raw.githubusercontent.com/rancher/charts/dev-v2.6/

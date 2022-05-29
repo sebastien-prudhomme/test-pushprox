@@ -1,0 +1,42 @@
+fullnameOverride: kube-prometheus
+kubeControllerManager:
+  service:
+    enabled: false
+  serviceMonitor:
+    enabled: false
+kubeEtcd:
+  enabled: false
+kubeScheduler:
+  service:
+    enabled: false
+  serviceMonitor:
+    enabled: false
+kubeProxy:
+  enabled: true
+grafana:
+  adminPassword: password
+prometheus:
+  # serviceMonitor:
+  #   selfMonitor: false
+  # resources:
+  #   resources:
+  #     limits:
+  #       memory: 512Mi
+  #     requests:
+  #       cpu: 40m
+  #       memory: 256Mi
+  prometheusSpec:
+    ruleSelectorNilUsesHelmValues: false
+    serviceMonitorSelectorNilUsesHelmValues: false
+    podMonitorSelectorNilUsesHelmValues: false
+    probeSelectorNilUsesHelmValues: false
+    # retention: 10d
+    # storageSpec:
+    #   volumeClaimTemplate:
+    #     spec:
+    #       storageClassName: local-path
+    #       accessModes:
+    #         - ReadWriteOnce
+    #       resources:
+    #         requests:
+    #           storage: 1Gi

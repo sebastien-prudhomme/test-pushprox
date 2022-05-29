@@ -1,0 +1,15 @@
+component: kube-scheduler
+metricsPort: 10251
+clients:
+  port: 10012
+  useLocalhost: true
+  resources: {}
+  nodeSelector:
+    node-role.kubernetes.io/control-plane: "true"
+  tolerations:
+    - effect: NoExecute
+      operator: Exists
+    - effect: NoSchedule
+      operator: Exists
+proxy:
+  resources: {}

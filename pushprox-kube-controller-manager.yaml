@@ -1,0 +1,39 @@
+component: kube-controller-manager
+metricsPort: 10252
+clients:
+  port: 10011
+  useLocalhost: true
+  resources: {}
+  nodeSelector:
+    node-role.kubernetes.io/control-plane: "true"
+  tolerations:
+    - effect: NoExecute
+      operator: Exists
+    - effect: NoSchedule
+      operator: Exists
+proxy:
+  resources: {}
+
+# BUG
+# Le client ne se reconnecte pas si le proxy n'est pas dispo...
+
+# TESTS
+# /metrics sur l'IP du client : OK
+# /metrics sur l'IP du proxy : OK
+# /metrics en direct sur IP hote / port 10252 : OK
+
+# idem mais en passant par le proxy : strconv.ParseFloat: parsing "": invalid syntax 
+
+# logs du proxy
+# level=info ts=2022-05-29T10:16:09.385Z caller=coordinator.go:116 msg=DoScrape scrape_id=1853922e-3b77-4717-8675-3ce1cadd5de6 url=http://192.168.1.51:10252/metrics
+# level=info ts=2022-05-29T10:16:09.385Z caller=main.go:154 msg="Responded to /poll" url=http://192.168.1.51:10252/metrics scrape_id=1853922e-3b77-4717-8675-3ce1cadd5de6
+# level=info ts=2022-05-29T10:16:09.386Z caller=coordinator.go:137 msg=WaitForScrapeInstruction fqdn=192.168.1.51
+# level=info ts=2022-05-29T10:16:09.386Z caller=main.go:136 msg="Got /push" scrape_id=1853922e-3b77-4717-8675-3ce1cadd5de6
+# level=info ts=2022-05-29T10:16:09.386Z caller=coordinator.go:169 msg=ScrapeResult scrape_id=1853922e-3b77-4717-8675-3ce1cadd5de6
+
+#logs du client
+# level=info ts=2022-05-29T10:19:28.097Z caller=main.go:232 msg="Got scrape request" scrape_id=43e5571a-04ad-47ff-bcd7-d2d5ec3ecdaf url=http://192.168.1.51:10252/metrics
+# level=error ts=2022-05-29T10:19:28.097Z caller=main.go:101 err="strconv.ParseFloat: parsing \"\": invalid syntax"
+# level=info ts=2022-05-29T10:19:28.097Z caller=main.go:113 msg="Pushed failed scrape response"
+
+# IMPOSE de mettre ce header : curl --proxy http://10.42.0.204:8080 -H "X-Prometheus-Scrape-Timeout-Seconds: 10.0" http://192.168.1.51:10252/metrics
