@@ -48,6 +48,22 @@ deploy:
 apiVersion: skaffold/v2beta23
 kind: Config
 metadata:
+  name: pushprox-kube-etcd
+deploy:
+  helm:
+    releases:
+      - name: pushprox-kube-etcd
+        remoteChart: rancher-pushprox
+        valuesFiles:
+          - pushprox-kube-etcd.yaml
+        namespace: kube-prometheus
+        version: 100.0.1
+        createNamespace: true
+        repo: https://raw.githubusercontent.com/rancher/charts/dev-v2.6/
+---
+apiVersion: skaffold/v2beta23
+kind: Config
+metadata:
   name: pushprox-kube-proxy
 deploy:
   helm:

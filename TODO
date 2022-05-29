@@ -1,0 +1,2 @@
+- Ajouter un ServiceMonitor pour le pod proxy
+- Ajouter un ServiceMonitor pour le pod client
