@@ -3,11 +3,23 @@ metricsPort: 10249
 clients:
   port: 10013
   useLocalhost: true
-  resources: {}
+  resources:
+    limits:
+      cpu: 20m
+      memory: 20Mi
+    requests:
+      cpu: 10m
+      memory: 10Mi
   tolerations:
     - effect: NoExecute
       operator: Exists
     - effect: NoSchedule
       operator: Exists
 proxy:
-  resources: {}
+  resources:
+    limits:
+      cpu: 20m
+      memory: 20Mi
+    requests:
+      cpu: 10m
+      memory: 10Mi

@@ -3,7 +3,13 @@ metricsPort: 2381
 clients:
   port: 10014
   useLocalhost: true
-  resources: {}
+  resources:
+    limits:
+      cpu: 20m
+      memory: 20Mi
+    requests:
+      cpu: 10m
+      memory: 10Mi
   nodeSelector:
     node-role.kubernetes.io/etcd: "true"
   tolerations:
@@ -12,4 +18,10 @@ clients:
     - effect: NoSchedule
       operator: Exists
 proxy:
-  resources: {}
+  resources:
+    limits:
+      cpu: 20m
+      memory: 20Mi
+    requests:
+      cpu: 10m
+      memory: 10Mi

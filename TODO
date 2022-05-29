@@ -2,3 +2,7 @@
 - Ajouter un ServiceMonitor pour le pod client
 - Configurer CPU/Mem
   https://blog.kubecost.com/blog/requests-and-limits/
+  Limits = 2 x la request
+
+  Client : Mem 10Mi
+  Proxy : Mem 10Mi
