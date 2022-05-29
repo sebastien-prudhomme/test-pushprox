@@ -1,2 +1,4 @@
 - Ajouter un ServiceMonitor pour le pod proxy
 - Ajouter un ServiceMonitor pour le pod client
+- Configurer CPU/Mem
+  https://blog.kubecost.com/blog/requests-and-limits/
